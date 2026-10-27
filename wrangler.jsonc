@@ -1,11 +1,21 @@
 {
   "name": "mellow",
+  "main": "src/worker.js",
   "compatibility_date": "2026-10-26",
   "assets": {
     "directory": "./public",
+    "binding": "ASSETS",
     "not_found_handling": "single-page-application",
-    "run_worker_first": false
+    "run_worker_first": ["/api/*"]
   },
+  "durable_objects": {
+    "bindings": [
+      { "name": "VOLUME_DO", "class_name": "VolumeStore" }
+    ]
+  },
+  "migrations": [
+    { "tag": "v1", "new_sqlite_classes": ["VolumeStore"] }
+  ],
   "routes": [
     { "pattern": "mellow.navonsimon.com", "custom_domain": true }
   ]

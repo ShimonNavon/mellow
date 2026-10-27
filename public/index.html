@@ -243,6 +243,95 @@
   .menu button:hover{background:var(--panel-strong);color:var(--text)}
   .menu button[data-active="true"]{color:var(--accent)}
   .timer-wrap{position:relative}
+
+  /* ---- tabs, focus, hud ---- */
+  .tabs{display:inline-flex;gap:2px;padding:4px;margin-bottom:20px;border:1px solid var(--line);border-radius:999px;background:var(--panel)}
+  .tab{
+    font:inherit;font-size:12.5px;font-weight:600;color:var(--muted);
+    background:transparent;border:0;border-radius:999px;padding:7px 14px;cursor:pointer;
+    display:inline-flex;align-items:center;gap:7px;
+    transition:color .16s var(--ease),background .16s var(--ease);
+  }
+  .tab:hover{color:var(--text)}
+  .tab[aria-selected="true"]{color:var(--text);background:var(--panel-strong);box-shadow:inset 0 0 0 1px var(--line)}
+  .tab .ai-mark{
+    font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--accent);
+    border:1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+    border-radius:4px;padding:1px 4px;line-height:1.2;
+  }
+  .focus-list{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .focus-card{
+    position:relative;text-align:left;font:inherit;color:var(--text);
+    background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:12px 13px 11px;cursor:pointer;
+    display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center;
+    transition:border-color .18s var(--ease),background .18s var(--ease),transform .18s var(--ease);
+  }
+  .focus-card:hover{border-color:var(--line-strong);background:var(--panel-strong);transform:translateY(-1px)}
+  .focus-card .swatch{
+    width:30px;height:30px;border-radius:50%;position:relative;
+    background:linear-gradient(140deg, var(--s1), var(--s2));
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.18), 0 4px 16px -6px var(--s1);
+  }
+  .focus-card .swatch::after{
+    content:"AI";position:absolute;right:-7px;bottom:-5px;
+    font-size:8px;font-weight:700;letter-spacing:.06em;color:var(--bg);
+    background:var(--accent);border-radius:3px;padding:1px 3px;line-height:1.3;
+    box-shadow:0 0 0 2px var(--bg);
+  }
+  .focus-card .nm{display:block;font-size:13.5px;font-weight:600;letter-spacing:.01em;line-height:1.25}
+  .focus-card .mo{display:block;font-size:11.5px;color:var(--faint);line-height:1.3;margin-top:2px}
+  .focus-card[aria-pressed="true"]{
+    border-color:color-mix(in srgb, var(--accent) 55%, transparent);
+    background:var(--accent-soft);
+    box-shadow:0 16px 40px -30px var(--accent);
+  }
+  .focus-card[aria-pressed="true"] .nm{color:var(--accent)}
+  .sessions{display:flex;align-items:center;gap:7px;margin-top:14px;font-size:11.5px;color:var(--faint);letter-spacing:.02em}
+  .sessions .chip{padding:6px 12px;font-size:12.5px}
+  .sessions .mini{font-size:11px}
+  .focus-note{margin:12px 0 0;font-size:11.5px;color:var(--faint)}
+  .focus-note b{font-weight:600;color:var(--muted)}
+  .sync{display:inline-flex;align-items:center;gap:7px}
+  .sync .led{width:6px;height:6px;border-radius:50%;background:var(--faint);transition:background .2s,box-shadow .2s}
+  .sync[data-on="true"] .led{background:var(--accent);box-shadow:0 0 8px var(--accent)}
+  .sync-menu{min-width:270px;padding:12px}
+  .sync-menu p{margin:0 0 8px;font-size:12.5px;color:var(--muted);line-height:1.45}
+  .sync-menu code{
+    display:block;font:12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+    background:color-mix(in srgb, var(--text) 7%, transparent);border:1px solid var(--line);
+    border-radius:8px;padding:8px 9px;color:var(--text);white-space:nowrap;overflow:auto;
+  }
+  .sync-menu .copy{
+    margin-top:8px;width:100%;text-align:center;font-size:12px;font-weight:600;
+    color:var(--accent);background:transparent;border:1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+    border-radius:8px;padding:7px;cursor:pointer;
+  }
+  .hud{
+    position:fixed;left:50%;bottom:26px;z-index:60;pointer-events:none;
+    display:flex;align-items:center;gap:12px;
+    padding:11px 16px;border-radius:999px;
+    background:color-mix(in srgb, var(--bg) 72%, transparent);
+    border:1px solid color-mix(in srgb, var(--text) 14%, transparent);
+    backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+    box-shadow:0 22px 50px -24px rgba(0,0,0,.7);
+    opacity:0;transform:translate(-50%,10px);
+    transition:opacity .2s var(--ease),transform .2s var(--ease);
+  }
+  .hud[data-show="true"]{opacity:1;transform:translate(-50%,0)}
+  .hud .ico{display:grid;place-items:center;color:var(--text);opacity:.85}
+  .hud .ico svg{width:17px;height:17px}
+  .hud .bar{width:156px;height:5px;border-radius:3px;background:color-mix(in srgb, var(--text) 18%, transparent);overflow:hidden}
+  .hud .bar i{display:block;height:100%;width:var(--v,62%);border-radius:3px;background:var(--text);transition:width .06s linear}
+  .hud .val{font-size:12px;color:var(--text);font-variant-numeric:tabular-nums;min-width:2.1em;text-align:right}
+  .hud .cap{position:absolute;left:0;right:0;top:-20px;text-align:center;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+  @media (max-width:560px){
+    .focus-list{grid-template-columns:1fr 1fr;gap:8px}
+    .focus-card{padding:10px 11px}
+    .focus-card .mo{display:none}
+    .sessions{flex-wrap:wrap}
+    .hud{bottom:18px}
+  }
   .toast{
     position:fixed;right:20px;bottom:20px;z-index:50;
     background:#171218f2;color:#f6efea;border:1px solid rgba(255,255,255,.12);
@@ -287,6 +376,16 @@
       <span class="wordmark">mellow<span class="dot"></span></span>
       <p class="tagline">a room for slow listening</p>
       <div class="top-right">
+        <div class="timer-wrap">
+          <button class="ghost sync" id="syncBtn" data-on="false" aria-expanded="false" aria-controls="syncMenu" title="Follow your Mac's volume keys">
+            <span class="led" aria-hidden="true"></span><span id="syncLabel">Mac keys</span>
+          </button>
+          <div class="menu sync-menu" id="syncMenu" hidden>
+            <p>Run this once in Terminal, then Mellow follows the volume keys on your Mac:</p>
+            <code id="syncCmd">~/Developer/mellow/bin/mellow-keys --install</code>
+            <button class="copy" id="syncCopy">Copy command</button>
+          </div>
+        </div>
         <span class="clock" id="clock"></span>
         <div class="timer-wrap">
           <button class="ghost" id="timerBtn" aria-expanded="false" aria-controls="timerMenu">
@@ -315,16 +414,34 @@
       </section>
 
       <section class="deck">
-        <p class="eyebrow">Now playing</p>
+        <div class="tabs" role="tablist" aria-label="Sound source">
+          <button class="tab" role="tab" id="tabScenes" data-tab="scenes" aria-selected="true" aria-controls="panelScenes">Scenes</button>
+          <button class="tab" role="tab" id="tabFocus" data-tab="focus" aria-selected="false" aria-controls="panelFocus">Focus <span class="ai-mark">AI</span></button>
+        </div>
+
+        <p class="eyebrow" id="eyebrow">Now playing</p>
         <h1 id="sceneName">Dusk</h1>
         <p class="desc" id="sceneDesc"></p>
 
-        <div class="textures" role="group" aria-label="Extra textures">
-          <button class="chip" data-tex="rain" aria-pressed="false">Rain</button>
-          <button class="chip" data-tex="vinyl" aria-pressed="false">Vinyl</button>
+        <div id="panelScenes" role="tabpanel" aria-labelledby="tabScenes">
+          <div class="textures" role="group" aria-label="Extra textures">
+            <button class="chip" data-tex="rain" aria-pressed="false">Rain</button>
+            <button class="chip" data-tex="vinyl" aria-pressed="false">Vinyl</button>
+          </div>
+          <div class="scenes" id="scenes" role="group" aria-label="Scenes"></div>
         </div>
 
-        <div class="scenes" id="scenes" role="group" aria-label="Scenes"></div>
+        <div id="panelFocus" role="tabpanel" aria-labelledby="tabFocus" hidden>
+          <div class="focus-list" id="focusList" role="group" aria-label="Focus streams"></div>
+          <div class="sessions">
+            <span>Focus session</span>
+            <button class="chip" data-session="0" aria-pressed="true">Off</button>
+            <button class="chip" data-session="25" aria-pressed="false">25m</button>
+            <button class="chip" data-session="50" aria-pressed="false">50m</button>
+            <button class="chip" data-session="90" aria-pressed="false">90m</button>
+          </div>
+          <p class="focus-note"><b>Stable Audio 3</b> · generated once, loops seamlessly</p>
+        </div>
 
         <div class="transport">
           <button class="skip" id="prev" aria-label="Previous scene">
@@ -342,9 +459,18 @@
             <input id="vol" type="range" min="0" max="100" value="62" aria-label="Volume">
           </div>
         </div>
-        <p class="hint"><kbd>space</kbd> play · <kbd>←</kbd><kbd>→</kbd> wander · <kbd>m</kbd> mute</p>
+        <p class="hint"><kbd>space</kbd> play · <kbd>←</kbd><kbd>→</kbd> next · <kbd>↑</kbd><kbd>↓</kbd> volume · <kbd>m</kbd> mute</p>
       </section>
     </main>
+  </div>
+
+  <div class="hud" id="hud" data-show="false" aria-hidden="true">
+    <span class="cap" id="hudCap">Volume</span>
+    <span class="ico" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3l4.5-3.6v12.2L7 14.5H4z"/><path d="M16 9a4.6 4.6 0 010 6"/><path d="M18.6 6.4a8 8 0 010 11.2"/></svg>
+    </span>
+    <span class="bar"><i id="hudBar"></i></span>
+    <span class="val" id="hudVal">62</span>
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -406,9 +532,43 @@
     }
   ];
 
+
+  const FOCUS = [
+    {
+      id: "deep-focus", name: "Deep Focus", mood: "analogue drift · no melody",
+      accent: "#a99bd9", accent2: "#5b5288", file: "/focus/deep-focus.mp3", loop: 41,
+      desc: "Long analogue pads with no melody at all. A wide, quiet room for one task."
+    },
+    {
+      id: "rain-study", name: "Rain Study", mood: "rain on glass · felted piano",
+      accent: "#9db6c8", accent2: "#5d7488", file: "/focus/rain-study.mp3", loop: 41,
+      desc: "Rain against the window under slow felted piano. Grey light, steady hands."
+    },
+    {
+      id: "cafe-hush", name: "Café Hush", mood: "distant room · no music",
+      accent: "#c9a785", accent2: "#8a6a55", file: "/focus/cafe-hush.mp3", loop: 41,
+      desc: "A café at the quiet end of the afternoon — cups, chairs and nothing to follow."
+    },
+    {
+      id: "night-library", name: "Night Library", mood: "page turns · room tone",
+      accent: "#8e9ec9", accent2: "#4f5d8f", file: "/focus/night-library.mp3", loop: 41,
+      desc: "An empty library at midnight: pages, ventilation hum and deep stillness."
+    },
+    {
+      id: "brown-noise", name: "Brown Noise", mood: "smooth · even · deep",
+      accent: "#b08d6a", accent2: "#6d5442", file: "/focus/brown-noise.mp3", loop: 41,
+      desc: "Soft brown noise for when everything else is too loud. No music, just cover."
+    },
+    {
+      id: "slow-keys", name: "Slow Keys", mood: "lo-fi keys · tape hiss",
+      accent: "#d3a06f", accent2: "#96604f", file: "/focus/slow-keys.mp3", loop: 41,
+      desc: "Mellow electric piano and warm tape hiss. Slow chords, no drums, no vocals."
+    }
+  ];
+
   const STORE = "mellow.v1";
   const state = Object.assign(
-    { scene: "dusk", volume: 62, rain: false, vinyl: false, timer: 0 },
+    { scene: "dusk", volume: 62, rain: false, vinyl: false, timer: 0, timerKind: "sleep", mode: "scenes", focus: "deep-focus", session: 0 },
     readStore()
   );
 
@@ -421,6 +581,7 @@
   }
 
   const sceneById = id => SCENES.find(s => s.id === id) || SCENES[0];
+  const focusById = id => FOCUS.find(f => f.id === id) || FOCUS[0];
 
   /* ---------- audio helpers ---------- */
 
@@ -755,6 +916,9 @@
       this.timer = null;
       this.started = false;
       this.overlayGain = {};
+      this.mode = "scene";
+      this.focusAudio = null;
+      this.focusNode = null;
     }
 
     init(){
@@ -781,6 +945,37 @@
       }
     }
 
+    initFocus(){
+      if (this.focusAudio) return;
+      const a = new Audio();
+      a.preload = "auto";
+      a.loop = true;
+      a.crossOrigin = "anonymous";
+      this.focusNode = this.ctx.createMediaElementSource(a);
+      this.focusNode.connect(this.master);
+      this.focusAudio = a;
+    }
+
+    startFocus(track){
+      this.init();
+      this.initFocus();
+      const ctx = this.ctx;
+      this.started = true;
+      this.mode = "focus";
+      if (this.layer){ this.layer.stop(); this.layer = null; }
+      clearInterval(this.timer);
+      this.timer = null;
+      const a = this.focusAudio;
+      const wanted = new URL(track.file, location.href).href;
+      if (a.src !== wanted) a.src = track.file;
+      a.volume = 1;
+      const p = a.play();
+      if (p && p.catch) p.catch(() => {});
+      this.master.gain.cancelScheduledValues(ctx.currentTime);
+      this.master.gain.setValueAtTime(Math.max(this.master.gain.value, 0.0001), ctx.currentTime);
+      this.master.gain.linearRampToValueAtTime(this.targetGain(), ctx.currentTime + 1.4);
+    }
+
     applyOverlay(overlay, seconds = 1.2){
       if (!this.ctx) return;
       this.ensureOverlay();
@@ -798,6 +993,8 @@
       this.init();
       const ctx = this.ctx;
       this.started = true;
+      this.mode = "scene";
+      if (this.focusAudio && !this.focusAudio.paused) this.focusAudio.pause();
       if (this.layer) this.layer.stop();
       this.layer = new Layer(this, scene, overlay);
       this.layer.scheduleAhead(ctx.currentTime + scene.seg * 1.5);
@@ -835,6 +1032,7 @@
       this.timer = null;
       if (this.layer) this.layer.stop();
       this.layer = null;
+      if (this.focusAudio) this.focusAudio.pause();
       this.started = false;
     }
   }
@@ -844,6 +1042,12 @@
   const engine = new Engine();
   const els = {
     scenes: document.getElementById("scenes"),
+    focusList: document.getElementById("focusList"),
+    tabScenes: document.getElementById("tabScenes"),
+    tabFocus: document.getElementById("tabFocus"),
+    panelScenes: document.getElementById("panelScenes"),
+    panelFocus: document.getElementById("panelFocus"),
+    eyebrow: document.getElementById("eyebrow"),
     play: document.getElementById("play"),
     prev: document.getElementById("prev"),
     next: document.getElementById("next"),
@@ -856,7 +1060,16 @@
     timerMenu: document.getElementById("timerMenu"),
     timerLabel: document.getElementById("timerLabel"),
     clock: document.getElementById("clock"),
-    toast: document.getElementById("toast")
+    toast: document.getElementById("toast"),
+    hud: document.getElementById("hud"),
+    hudBar: document.getElementById("hudBar"),
+    hudVal: document.getElementById("hudVal"),
+    hudCap: document.getElementById("hudCap"),
+    syncBtn: document.getElementById("syncBtn"),
+    syncMenu: document.getElementById("syncMenu"),
+    syncLabel: document.getElementById("syncLabel"),
+    syncCmd: document.getElementById("syncCmd"),
+    syncCopy: document.getElementById("syncCopy")
   };
 
   let playing = false;
@@ -864,14 +1077,23 @@
   let sleepTimer = null;
   let sleepEnds = 0;
 
-  function paintScene(scene, animate = true){
-    document.documentElement.style.setProperty("--accent", scene.accent);
-    document.documentElement.style.setProperty("--accent-2", scene.accent2);
-    els.sceneName.textContent = scene.name;
-    els.sceneDesc.textContent = scene.desc;
-    document.title = playing ? `${scene.name} · mellow` : "mellow — a room for slow listening";
-    [...els.scenes.children].forEach(b => b.setAttribute("aria-pressed", String(b.dataset.id === scene.id)));
-    drawOnce(scene);
+  function paintNow(){
+    const focus = state.mode === "focus";
+    const item = focus ? focusById(state.focus) : sceneById(state.scene);
+    document.documentElement.style.setProperty("--accent", item.accent);
+    document.documentElement.style.setProperty("--accent-2", item.accent2);
+    els.eyebrow.textContent = focus ? "Now streaming" : "Now playing";
+    els.sceneName.textContent = item.name;
+    els.sceneDesc.textContent = item.desc;
+    els.tabScenes.setAttribute("aria-selected", String(!focus));
+    els.tabFocus.setAttribute("aria-selected", String(focus));
+    els.panelScenes.hidden = focus;
+    els.panelFocus.hidden = !focus;
+    [...els.scenes.children].forEach(b => b.setAttribute("aria-pressed", String(b.dataset.id === state.scene)));
+    [...els.focusList.children].forEach(b => b.setAttribute("aria-pressed", String(b.dataset.id === state.focus)));
+    document.title = playing ? `${item.name} · mellow` : "mellow — a room for slow listening";
+    if (playing) updateSession();
+    drawOnce(item);
   }
 
   function buildScenes(){
@@ -896,30 +1118,84 @@
     });
   }
 
+  function buildFocus(){
+    els.focusList.innerHTML = "";
+    FOCUS.forEach(s => {
+      const b = document.createElement("button");
+      b.className = "focus-card";
+      b.dataset.id = s.id;
+      b.style.setProperty("--s1", s.accent);
+      b.style.setProperty("--s2", s.accent2);
+      b.setAttribute("aria-pressed", "false");
+      const sw = document.createElement("span");
+      sw.className = "swatch";
+      const txt = document.createElement("span");
+      const nm = document.createElement("span");
+      nm.className = "nm"; nm.textContent = s.name;
+      const mo = document.createElement("span");
+      mo.className = "mo"; mo.textContent = s.mood;
+      txt.append(nm, mo);
+      b.append(sw, txt);
+      els.focusList.append(b);
+    });
+  }
+
+  function updateSession(){
+    if (!("mediaSession" in navigator)) return;
+    const focus = state.mode === "focus";
+    const item = focus ? focusById(state.focus) : sceneById(state.scene);
+    try {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: item.name,
+        artist: focus ? "Mellow · focus stream" : "Mellow",
+        album: focus ? "AI focus sounds" : "Generative scenes",
+        artwork: [{ src: "/icon-512.png", sizes: "512x512", type: "image/png" }]
+      });
+      navigator.mediaSession.playbackState = playing ? "playing" : "paused";
+    } catch {}
+  }
+
   function overlay(){ return { rain: state.rain, vinyl: state.vinyl }; }
 
-  function select(id, { autoplayIfPlaying = true } = {}){
-    const s = sceneById(id);
-    state.scene = s.id;
+  function selectScene(id){
+    state.mode = "scenes";
+    state.scene = sceneById(id).id;
     saveStore();
-    paintScene(s);
-    if (engine.ctx && (playing || autoplayIfPlaying && engine.started)){
-      engine.start(s, overlay());
-    }
+    paintNow();
+    if (playing) engine.start(sceneById(state.scene), overlay());
+  }
+
+  function selectFocus(id){
+    state.mode = "focus";
+    state.focus = focusById(id).id;
+    saveStore();
+    paintNow();
+    if (playing) engine.startFocus(focusById(state.focus));
+  }
+
+  function activeList(){ return state.mode === "focus" ? FOCUS : SCENES; }
+  function activeId(){ return state.mode === "focus" ? state.focus : state.scene; }
+  function selectCurrent(id){ if (state.mode === "focus") selectFocus(id); else selectScene(id); }
+
+  function step(delta){
+    const list = activeList();
+    const i = Math.max(0, list.findIndex(x => x.id === activeId()));
+    const nx = list[(i + delta + list.length) % list.length];
+    selectCurrent(nx.id);
   }
 
   async function play(){
-    const s = sceneById(state.scene);
-    engine.start(s, overlay());
+    const focus = state.mode === "focus";
+    if (focus) engine.startFocus(focusById(state.focus));
+    else engine.start(sceneById(state.scene), overlay());
     if (engine.ctx.state === "suspended") await engine.ctx.resume();
     playing = true;
     document.body.dataset.playing = "true";
     els.play.setAttribute("aria-pressed", "true");
     els.play.setAttribute("aria-label", "Pause");
     els.now.dataset.live = "true";
-    els.stateText.textContent = "playing · generative";
-    document.title = `${s.name} · mellow`;
-    if (sleepTimer) armSleep(sleepEnds - Date.now());
+    els.stateText.textContent = focus ? "streaming · focus" : "playing · generative";
+    paintNow();
   }
 
   async function pause(){
@@ -929,6 +1205,7 @@
     els.play.setAttribute("aria-label", "Play");
     els.now.dataset.live = "false";
     els.stateText.textContent = "paused";
+    updateSession();
     document.title = "mellow — a room for slow listening";
     await engine.fadeOut(1.1);
     if (!playing){
@@ -947,34 +1224,45 @@
   }
 
   /* sleep timer */
-  function armSleep(ms){
+  function armSleep(ms, kind = "sleep"){
     clearTimeout(sleepTimer);
+    state.timerKind = kind;
     if (!ms || ms <= 0){
       sleepTimer = null; sleepEnds = 0;
       state.timer = 0; saveStore();
-      els.timerLabel.textContent = "Sleep · off";
+      els.timerLabel.textContent = "Timer · off";
       els.timerBtn.dataset.on = "false";
       [...els.timerMenu.children].forEach(b => b.dataset.active = String(b.dataset.min === "0"));
+      if (state.session){ state.session = 0; saveStore(); paintSessions(); }
       return;
     }
     sleepEnds = Date.now() + ms;
     state.timer = Math.round(ms / 60000); saveStore();
     els.timerBtn.dataset.on = "true";
-    [...els.timerMenu.children].forEach(b => b.dataset.active = String(Number(b.dataset.min) === state.timer));
+    [...els.timerMenu.children].forEach(b => b.dataset.active = String(kind === "sleep" && Number(b.dataset.min) === state.timer));
+    if (kind === "sleep"){ state.session = 0; saveStore(); paintSessions(); }
+    else { state.session = state.timer; saveStore(); paintSessions(); }
+    const prefix = kind === "focus" ? "Focus" : "Sleep";
     const tick = () => {
       const left = sleepEnds - Date.now();
       if (left <= 0){
         sleepTimer = null; sleepEnds = 0;
-        els.timerLabel.textContent = "Sleep · off"; els.timerBtn.dataset.on = "false";
-        state.timer = 0; saveStore();
-        if (playing){ pause(); toast("Drifting off"); }
+        els.timerLabel.textContent = "Timer · off"; els.timerBtn.dataset.on = "false";
+        state.timer = 0; state.session = 0; saveStore(); paintSessions();
+        if (playing){ pause(); toast(kind === "focus" ? "Focus session complete" : "Drifting off"); }
         return;
       }
       const m = Math.floor(left / 60000), s = Math.floor((left % 60000) / 1000);
-      els.timerLabel.textContent = `Sleep · ${m}:${String(s).padStart(2, "0")}`;
+      els.timerLabel.textContent = `${prefix} · ${m}:${String(s).padStart(2, "0")}`;
       sleepTimer = setTimeout(tick, 1000);
     };
     tick();
+  }
+
+  function paintSessions(){
+    document.querySelectorAll("[data-session]").forEach(b => {
+      b.setAttribute("aria-pressed", String(Number(b.dataset.session) === state.session));
+    });
   }
 
   /* ---------- visualizer ---------- */
@@ -1075,15 +1363,75 @@
     smoothed.low += (raw.low - smoothed.low) * 0.08;
     smoothed.mid += (raw.mid - smoothed.mid) * 0.08;
     smoothed.high += (raw.high - smoothed.high) * 0.08;
-    drawOrb(sceneById(state.scene), now / 1000);
+    drawOrb(activeItem(), now / 1000);
   }
 
   /* ---------- UI ---------- */
+
+  function activeItem(){ return state.mode === "focus" ? focusById(state.focus) : sceneById(state.scene); }
 
   function syncVolume(){
     els.vol.value = state.volume;
     els.vol.style.setProperty("--fill", `${state.volume}%`);
     engine.setVolume(state.volume);
+  }
+
+  let hudTimer = 0;
+  function showHud(caption){
+    if (!els.hud) return;
+    els.hudBar.style.width = `${state.volume}%`;
+    els.hudVal.textContent = state.volume;
+    els.hudCap.textContent = caption || (state.volume === 0 ? "Muted" : "Volume");
+    els.hud.dataset.show = "true";
+    clearTimeout(hudTimer);
+    hudTimer = setTimeout(() => { els.hud.dataset.show = "false"; }, 1600);
+  }
+
+  function setVolume(v, { fromMac = false, silent = false } = {}){
+    const next = Math.max(0, Math.min(100, Math.round(v)));
+    const changed = next !== state.volume;
+    state.volume = next;
+    if (next > 0) mutedFrom = null;
+    syncVolume(); saveStore();
+    if (!silent && (changed || fromMac)) showHud(fromMac ? "Mac volume" : (next === 0 ? "Muted" : "Volume"));
+  }
+
+  /* mac volume bridge */
+  const mac = { linked: false, last: -1, first: true };
+
+  function paintMac(){
+    els.syncBtn.dataset.on = String(mac.linked);
+    els.syncBtn.title = mac.linked
+      ? "Following your Mac's volume keys"
+      : "Sync the app with your Mac's volume keys";
+    els.syncLabel.textContent = mac.linked ? "Mac keys · live" : "Mac keys";
+  }
+
+  function applyMac(data, initial){
+    if (!data || typeof data.volume !== "number") return;
+    const v = data.muted ? 0 : Math.round(data.volume);
+    if (v === mac.last) return;
+    mac.last = v;
+    setVolume(v, { fromMac: true, silent: !!initial && Math.abs(v - state.volume) < 2 });
+  }
+
+  async function pollVolume(){
+    try {
+      const r = await fetch("/api/volume", { cache: "no-store" });
+      if (!r.ok) throw new Error("offline");
+      const d = await r.json();
+      const fresh = d && typeof d.volume === "number" && Date.now() - (d.at || 0) < 90000;
+      if (!fresh) throw new Error("stale");
+      if (!mac.linked){ mac.linked = true; paintMac(); }
+      applyMac(d, mac.first || !playing);
+      mac.first = false;
+    } catch {
+      if (mac.linked || mac.first){
+        mac.linked = false;
+        mac.first = false;
+        paintMac();
+      }
+    }
   }
 
   function syncTextures(){
@@ -1093,27 +1441,40 @@
   }
 
   function bind(){
+    document.querySelectorAll(".tab").forEach(t => {
+      t.addEventListener("click", () => {
+        const focus = t.dataset.tab === "focus";
+        state.mode = focus ? "focus" : "scenes";
+        saveStore();
+        paintNow();
+        if (playing){
+          if (focus) engine.startFocus(focusById(state.focus));
+          else engine.start(sceneById(state.scene), overlay());
+        }
+      });
+    });
+
     els.scenes.addEventListener("click", e => {
       const b = e.target.closest(".scene");
-      if (!b) return;
-      select(b.dataset.id);
-      if (playing) { /* engine restarts inside select */ }
+      if (b) selectScene(b.dataset.id);
+    });
+    els.focusList.addEventListener("click", e => {
+      const b = e.target.closest(".focus-card");
+      if (b) selectFocus(b.dataset.id);
     });
 
     els.play.addEventListener("click", toggle);
-    els.prev.addEventListener("click", () => {
-      const i = SCENES.findIndex(s => s.id === state.scene);
-      select(SCENES[(i - 1 + SCENES.length) % SCENES.length].id);
-    });
-    els.next.addEventListener("click", () => {
-      const i = SCENES.findIndex(s => s.id === state.scene);
-      select(SCENES[(i + 1) % SCENES.length].id);
-    });
+    els.prev.addEventListener("click", () => step(-1));
+    els.next.addEventListener("click", () => step(1));
 
-    els.vol.addEventListener("input", () => {
-      state.volume = Number(els.vol.value);
-      mutedFrom = null;
-      syncVolume(); saveStore();
+    els.vol.addEventListener("input", () => setVolume(Number(els.vol.value)));
+
+    document.querySelectorAll("[data-session]").forEach(b => {
+      b.addEventListener("click", () => {
+        const min = Number(b.dataset.session);
+        armSleep(min * 60000, "focus");
+        toast(min ? `Focus session · ${min} min` : "Focus timer off");
+      });
     });
 
     document.querySelectorAll("[data-tex]").forEach(b => {
@@ -1136,15 +1497,33 @@
       const b = e.target.closest("button");
       if (!b) return;
       const min = Number(b.dataset.min);
-      armSleep(min * 60000);
+      armSleep(min * 60000, "sleep");
       els.timerMenu.hidden = true;
       els.timerBtn.setAttribute("aria-expanded", "false");
       toast(min ? `Sleeping in ${min} min` : "Sleep timer off");
     });
+
+    els.syncBtn.addEventListener("click", async e => {
+      e.stopPropagation();
+      if (mac.linked){ showHud("Mac volume"); toast("Following your Mac volume"); return; }
+      await pollVolume();
+      if (mac.linked){ toast("Mac volume keys synced"); showHud("Mac volume"); return; }
+      const open = els.syncMenu.hidden;
+      els.syncMenu.hidden = !open;
+      els.syncBtn.setAttribute("aria-expanded", String(open));
+    });
+    els.syncMenu.addEventListener("click", e => e.stopPropagation());
+    els.syncCopy.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(els.syncCmd.textContent.trim());
+        toast("Command copied");
+      } catch { toast("Select and copy the command"); }
+    });
+
     document.addEventListener("click", e => {
-      if (!els.timerMenu.hidden && !e.target.closest(".timer-wrap")){
-        els.timerMenu.hidden = true;
-        els.timerBtn.setAttribute("aria-expanded", "false");
+      if (!e.target.closest(".timer-wrap")){
+        if (!els.timerMenu.hidden){ els.timerMenu.hidden = true; els.timerBtn.setAttribute("aria-expanded", "false"); }
+        if (!els.syncMenu.hidden){ els.syncMenu.hidden = true; els.syncBtn.setAttribute("aria-expanded", "false"); }
       }
     });
 
@@ -1153,18 +1532,33 @@
       if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
       if (e.code === "Space" && (tag === "BUTTON" || tag === "A")) return;
       if (e.code === "Space"){ e.preventDefault(); toggle(); }
-      else if (e.code === "ArrowRight"){ e.preventDefault(); els.next.click(); }
-      else if (e.code === "ArrowLeft"){ e.preventDefault(); els.prev.click(); }
+      else if (e.code === "ArrowRight"){ e.preventDefault(); step(1); }
+      else if (e.code === "ArrowLeft"){ e.preventDefault(); step(-1); }
+      else if (e.code === "ArrowUp"){ e.preventDefault(); setVolume(state.volume + 5); }
+      else if (e.code === "ArrowDown"){ e.preventDefault(); setVolume(state.volume - 5); }
       else if (e.key.toLowerCase() === "m"){
-        if (state.volume > 0){ mutedFrom = state.volume; state.volume = 0; }
-        else { state.volume = mutedFrom || 62; mutedFrom = null; }
-        syncVolume(); saveStore();
-        toast(state.volume === 0 ? "Muted" : `Volume ${state.volume}%`);
+        if (state.volume > 0){ mutedFrom = state.volume; setVolume(0); }
+        else { setVolume(mutedFrom || 62); mutedFrom = null; }
+      }
+      else if (e.key.toLowerCase() === "f"){
+        const toFocus = state.mode !== "focus";
+        state.mode = toFocus ? "focus" : "scenes";
+        saveStore(); paintNow();
+        if (playing){ if (toFocus) engine.startFocus(focusById(state.focus)); else engine.start(sceneById(state.scene), overlay()); }
       }
     });
 
-    window.addEventListener("resize", () => { resizeViz(); drawOnce(sceneById(state.scene)); });
-    document.addEventListener("visibilitychange", () => { if (!document.hidden) drawOnce(sceneById(state.scene)); });
+    if ("mediaSession" in navigator){
+      try {
+        navigator.mediaSession.setActionHandler("play", () => { if (!playing) play(); });
+        navigator.mediaSession.setActionHandler("pause", () => { if (playing) pause(); });
+        navigator.mediaSession.setActionHandler("previoustrack", () => step(-1));
+        navigator.mediaSession.setActionHandler("nexttrack", () => step(1));
+      } catch {}
+    }
+
+    window.addEventListener("resize", () => { resizeViz(); drawOnce(activeItem()); });
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) drawOnce(activeItem()); });
     window.addEventListener("pagehide", () => { try { engine.ctx && engine.ctx.suspend(); } catch {} });
   }
 
@@ -1178,13 +1572,18 @@
 
   function init(){
     buildScenes();
+    buildFocus();
+    paintSessions();
     bind();
-    paintScene(sceneById(state.scene));
+    paintNow();
     syncVolume();
     syncTextures();
-    if (state.timer){ armSleep(state.timer * 60000); }
+    paintMac();
+    if (state.timer){ armSleep(state.timer * 60000, state.timerKind || "sleep"); }
     resizeViz();
-    drawOnce(sceneById(state.scene));
+    drawOnce(activeItem());
+    pollVolume();
+    setInterval(() => { if (!document.hidden) pollVolume(); }, 2500);
     raf = requestAnimationFrame(loop);
     clock();
     setInterval(clock, 20000);

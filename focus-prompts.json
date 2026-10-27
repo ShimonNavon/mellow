@@ -1,0 +1,41 @@
+{
+  "model": "stabilityai/stable-audio-3",
+  "model_size": "small-music",
+  "generated": "2026-10-27",
+  "duration_seconds": 45,
+  "steps": 8,
+  "cfg": 1.0,
+  "postprocessing": "end-to-start 4s equal-power crossfade to a 41s seamless loop, static gain to about -19.5 LUFS, MP3 160 kbps stereo",
+  "tracks": [
+    {
+      "id": "deep-focus",
+      "seed": 7,
+      "prompt": "deep focus ambient, warm analog drone pads, slow evolving harmonics, spacious, no melody, no drums, no vocals"
+    },
+    {
+      "id": "rain-study",
+      "seed": 11,
+      "prompt": "gentle rain on a window with soft felted piano notes, slow calm study ambience, instrumental, no vocals"
+    },
+    {
+      "id": "cafe-hush",
+      "seed": 23,
+      "prompt": "quiet cafe room ambience, soft distant murmurs, cups and chairs, warm hush, no music, no vocals"
+    },
+    {
+      "id": "night-library",
+      "seed": 31,
+      "prompt": "quiet library room tone at night, distant page turns, soft ventilation hum, calm, no music, no vocals"
+    },
+    {
+      "id": "brown-noise",
+      "seed": 47,
+      "prompt": "smooth steady brown noise texture, deep and even, for concentration, no music, no vocals"
+    },
+    {
+      "id": "slow-keys",
+      "seed": 59,
+      "prompt": "mellow lo-fi electric piano chords, slow warm study music, soft tape hiss, no drums, no vocals"
+    }
+  ]
+}

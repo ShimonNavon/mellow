@@ -1,0 +1,142 @@
+#!/usr/bin/env python3
+"""mellow-keys — send your Mac's output volume to mellow.
+
+Reads the system volume through AppleScript (read-only; nothing here changes
+your Mac) and posts changes to the mellow worker, so the web app can follow the
+volume keys on your keyboard.
+
+  mellow-keys                run in the foreground
+  mellow-keys --once         send the current volume once and exit
+  mellow-keys --install      install a LaunchAgent and start it in the background
+  mellow-keys --uninstall    stop it and remove the LaunchAgent
+"""
+import json
+import os
+import plistlib
+import shutil
+import subprocess
+import sys
+import time
+import urllib.request
+
+LABEL = "com.navonsimon.mellow-keys"
+PLIST = os.path.expanduser(f"~/Library/LaunchAgents/{LABEL}.plist")
+CONFIG = os.path.expanduser("~/.config/mellow/volume-bridge.json")
+HEARTBEAT = 15
+
+
+def load_config():
+    if not os.path.exists(CONFIG):
+        print(
+            "Missing ~/.config/mellow/volume-bridge.json.\n"
+            "Create it with your bridge url and key:\n"
+            '  {"url": "https://mellow.navonsimon.com/api/volume", "key": "<key>"}',
+            file=sys.stderr,
+        )
+        sys.exit(1)
+    with open(CONFIG) as fh:
+        cfg = json.load(fh)
+    if not cfg.get("url") or not cfg.get("key"):
+        print("volume-bridge.json needs both url and key.", file=sys.stderr)
+        sys.exit(1)
+    return cfg
+
+
+def read_volume():
+    try:
+        out = subprocess.run(
+            ["osascript", "-e", "get volume settings"],
+            capture_output=True, text=True, timeout=3,
+        ).stdout.strip()
+        parts = {}
+        for piece in out.split(","):
+            if ":" in piece:
+                k, v = piece.split(":", 1)
+                parts[k.strip()] = v.strip()
+        vol = int(round(float(parts.get("output volume", "50"))))
+        muted = parts.get("output muted", "false").lower() == "true"
+        return max(0, min(100, vol)), muted
+    except Exception:
+        return None, None
+
+
+def send(cfg, volume, muted):
+    body = json.dumps({"volume": volume, "muted": muted}).encode()
+    req = urllib.request.Request(
+        cfg["url"],
+        data=body,
+        headers={
+            "Content-Type": "application/json",
+            "x-mellow-key": cfg["key"],
+            "User-Agent": "mellow-keys/1",
+        },
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=8) as res:
+            return res.status == 200
+    except Exception:
+        return False
+
+
+def run(cfg):
+    last = None
+    sent_at = 0
+    while True:
+        vol, muted = read_volume()
+        if vol is not None:
+            now = time.time()
+            if (vol, muted) != last or now - sent_at > HEARTBEAT:
+                if send(cfg, vol, muted):
+                    last = (vol, muted)
+                    sent_at = now
+        time.sleep(0.6)
+
+
+def install():
+    cfg = load_config()
+    python = shutil.which("python3") or sys.executable
+    script = os.path.abspath(__file__)
+    os.makedirs(os.path.dirname(PLIST), exist_ok=True)
+    spec = {
+        "Label": LABEL,
+        "ProgramArguments": [python, script],
+        "RunAtLoad": True,
+        "KeepAlive": True,
+        "StandardOutPath": "/tmp/mellow-keys.log",
+        "StandardErrorPath": "/tmp/mellow-keys.log",
+    }
+    with open(PLIST, "wb") as fh:
+        plistlib.dump(spec, fh)
+    subprocess.run(["launchctl", "unload", PLIST], capture_output=True)
+    result = subprocess.run(["launchctl", "load", "-w", PLIST], capture_output=True, text=True)
+    if result.returncode != 0:
+        print(result.stderr.strip() or "launchctl failed", file=sys.stderr)
+        sys.exit(1)
+    send(cfg, *[x if x is not None else 50 for x in read_volume()])
+    print("mellow-keys installed — mellow now follows your Mac volume keys.")
+    print(f"Logs: /tmp/mellow-keys.log")
+    print(f"Remove it later with: {script} --uninstall")
+
+
+def uninstall():
+    subprocess.run(["launchctl", "unload", PLIST], capture_output=True)
+    if os.path.exists(PLIST):
+        os.remove(PLIST)
+    print("mellow-keys removed.")
+
+
+if __name__ == "__main__":
+    args = sys.argv[1:]
+    if "--install" in args:
+        install()
+    elif "--uninstall" in args:
+        uninstall()
+    elif "--once" in args:
+        cfg = load_config()
+        vol, muted = read_volume()
+        ok = send(cfg, vol if vol is not None else 50, bool(muted))
+        print("sent" if ok else "failed")
+        sys.exit(0 if ok else 1)
+    else:
+        run(load_config())

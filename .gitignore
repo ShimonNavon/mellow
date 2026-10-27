@@ -1,5 +1,6 @@
 .DS_Store
 *.log
 preview/
+focus-src/
 .wrangler/
 node_modules/
