@@ -1,0 +1,12 @@
+{
+  "name": "mellow",
+  "short_name": "mellow",
+  "description": "A personal, generative chill room. Soft pads, slow chords and rain that never repeats.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0d0b0f",
+  "theme_color": "#0d0b0f",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
